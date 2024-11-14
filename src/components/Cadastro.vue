@@ -1,8 +1,9 @@
 <template>
-  <div class="login-container">
-    <div class="login-box">
-      <h2 class="title">Bem-vindo de volta</h2>
-      <form class="form" @submit.prevent="fazerLogin">
+  <div class="cadastro-container">
+    <div class="cadastro-box">
+      <h2 class="title">Gastei</h2>
+      <form class="form" @submit.prevent="fazercadastro">
+        <input v-model="nome" class="input" type="text" placeholder="Nome" />
         <input v-model="email" class="input" type="email" placeholder="Email" />
         <p v-show="!emailValido" class="error-message">Email inválido.</p>
 
@@ -14,8 +15,8 @@
         <button class="form-btn" type="submit">Entrar</button>
       </form>
 
-      <p class="sign-up-label">
-        Não tem uma conta? <span class="sign-up-link">Cadastre-se</span>
+      <p class="sign-In-label">
+        Ja possui uma conta? <span class="sign-In-link">Faça seu login</span>
       </p>
     </div>
   </div>
