@@ -17,5 +17,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+#app {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f4f4;
+}
 </style>

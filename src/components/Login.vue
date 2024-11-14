@@ -1,152 +1,152 @@
 <template>
-    <div class="login-container"> <!--p/ toda pagina-->
-      <div class="login-box"> <!--p/ apenas o formulario-->
-        <img src="/logo-pequena.jpg" alt="Icone" class="icon">
-        <h1>Login</h1>
-        <form @submit.prevent="login"> <!--evento acionado quando clicamos no login-->
-          <input
-            v-model="email"
-            type="email"
-            placeholder="Digite seu e-mail"
-            required
-          />
-          <input
-            v-model="password"
-            :type="showPassword ? 'text' : 'password'" 
-            placeholder="Digite sua senha"
-            required
-          /> <!--se quiser true exibe, se false oculta-->
-          <button type="button" @click="togglePassword">
-            {{ showPassword ? 'Ocultar Senha' : 'Mostrar Senha' }}
-          </button> <!--adicionei um metodo para o botao-->
-          <button type="submit">Entrar</button>
-          <div class="links" v-show="showLinks"> <!--controla a visibiliadade-->
-            <a href="#">Esqueceu a senha?</a> <!--ADICIONAR AS TELAS-->
-            <a href="#">Criar conta</a>
-          </div>
-        </form>
-      </div>
+  <div class="login-container">
+    <div class="login-box">
+      <h2 class="title">Bem-vindo de volta</h2>
+      <form class="form" @submit.prevent="fazerLogin">
+        <input v-model="email" class="input" type="email" placeholder="Email" />
+        <p v-show="!emailValido" class="error-message">Formato de email inválido.</p>
+
+        <input v-model="senha" class="input" type="password" placeholder="Senha" />
+        <p v-show="senha.length < 6" class="error-message">A senha deve ter no mínimo 6 caracteres.</p>
+
+        <p class="page-link">Esqueceu a senha?</p>
+
+        <button class="form-btn" type="submit">Entrar</button>
+      </form>
+
+      <p class="sign-up-label">
+        Não tem uma conta? <span class="sign-up-link">Cadastre-se</span>
+      </p>
     </div>
-  </template>
-  
-  <script lang="ts"> //aqui onde define o ts
-  import { defineComponent, ref } from "vue"; //exportando o vue
+  </div>
+</template>
 
-  //temos 4 variaveis (email,password,showP e showL) e dois metodos (login e toogleP)
-  
-  export default defineComponent({
-    name: "Login",
-    setup() {
-      // Definindo variáveis/metodos
+<script lang="ts" setup>
+import { ref, computed } from 'vue';
 
-      //variaveis reativas com ref: cria um objeto reativo
-      const email = ref<string>("");
-      const password = ref<string>("");
-      const showPassword = ref<boolean>(false);
-      const showLinks = ref<boolean>(true);
-  
-      // Função para fazer o login
-      
-      const login = () => {
-        if (!email.value || !password.value) { 
-          alert("Por favor, preencha todos os campos.");//verica se está vazio
-          return;
-        }
-        console.log(`E-mail: ${email.value}, Senha: ${password.value}`);
-      };
-  
-      // Função para alternar a visibilidade da senha 
+const email = ref('');
+const senha = ref('');
 
-      const togglePassword = () => {
-        showPassword.value = !showPassword.value;
-      };
-  
-      return {
-        email,
-        password,
-        showPassword,
-        showLinks,
-        login,
-        togglePassword,
-      };
-    },
-  });
-  </script>
-  
-  <style scoped>
+const emailValido = computed(() => /\S+@\S+\.\S+/.test(email.value));
 
-  .login-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #f5f5f5;
-
+function fazerLogin() {
+  if (emailValido.value && senha.value.length >= 6) {
+    alert('Login realizado com sucesso!');
+  } else {
+    alert('Preencha os campos corretamente.');
   }
-  
-  .login-box {
-    width: 300px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    background-color: #fff;
-    border-radius: 8px;
-    text-align: center
-  }
-
-  .links {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    text-decoration: none
-  }
-
-  .icon {
-  width: 90px;
-  height: auto;
 }
+</script>
 
-* {
+<style scoped>
+
+body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box; 
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #3a8d99, #0e1e30);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-h1 {
-  font-size: 25px;
-  color:#cd0519;
-  font-family: 'Arial', sans-serif;
+.login-container {
+  width: 100%;
+  max-width: 300px;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  width: 100%;
+  background: #fff;
+  padding: 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
   text-align: center;
-  padding-bottom: 20px;
-  margin-top: 0;
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
 }
 
-  input {
-    width: 90%;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background-color: #cd0519;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background: linear-gradient(to right, #F9D423, #e65c00); 
+.login-box:hover {
+  transform: scale(1);
+}
+
+.title {
+  color: #333;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input {
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input:focus {
+  border-color: #0e1e30;
+}
+
+.error-message {
+  color: rgba(201, 4, 4, 0.811);
+  font-size: 12px;
+  margin-top: -8px;
+}
+
+.page-link {
+  text-align: end;
+  color: #0e1e30;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.form-btn {
+  padding: 12px 20px;
+  background-color: #0e1e30;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-btn:hover {
+  background-color: #3a8d99;
+}
+
+.form-btn:active {
+  box-shadow: none;
+}
+
+.sign-up-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.sign-up-link {
+  color: #0e1e30;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+  .title {
+    font-size: 28px;
   }
 
-  a:hover {
-  color: #ff5722;
-  text-decoration: underline; 
-}
-  
-  </style>
-  
+</style>
