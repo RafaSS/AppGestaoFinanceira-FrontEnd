@@ -21,7 +21,7 @@
         />
         <p v-show="mostrarErroSenha" class="error-message">A senha deve ter no mínimo 6 caracteres.</p>
 
-        <p class="page-link">Esqueceu a senha?</p>
+        <p class="page-link" @click="navegarParaSenha">Esqueceu a senha?</p>
 
         <button class="form-btn" type="submit">Entrar</button>
       </form>
@@ -41,6 +41,9 @@ const router = useRouter();
 
 function navegarParaCadastro() {
   router.push('/cadastro');
+}
+function navegarParaSenha() {
+  router.push('/senha'); 
 }
 
 const email = ref('');
