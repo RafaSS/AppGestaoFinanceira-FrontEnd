@@ -1,8 +1,17 @@
 <template>
-  <div class="login-container">
-    <div class="login-box">
-      <h2 class="title">Bem-vindo de volta</h2>
-      <form class="form" @submit.prevent="fazerLogin">
+  <div class="register-container">
+    <div class="register-box">
+      <h2 class="title">Crie sua conta</h2>
+      <form class="form" @submit.prevent="fazerCadastro">
+        <input 
+          v-model="nome" 
+          class="input" 
+          type="text" 
+          placeholder="Nome completo" 
+          @input="validarNome"
+        />
+        <p v-show="mostrarErroNome" class="error-message">O nome deve ter pelo menos 3 caracteres.</p>
+
         <input 
           v-model="email" 
           class="input" 
@@ -21,14 +30,11 @@
         />
         <p v-show="mostrarErroSenha" class="error-message">A senha deve ter no mínimo 6 caracteres.</p>
 
-        <p class="page-link">Esqueceu a senha?</p>
-
-        <button class="form-btn" type="submit">Entrar</button>
+        <button class="form-btn" type="submit">Cadastrar</button>
       </form>
-      <p class="sign-up-label">
-  Não tem uma conta? <span class="sign-up-link" @click="navegarParaCadastro">Cadastre-se</span>
-</p>
-
+      <p class="login-label">
+        Já tem uma conta? <span class="login-link" @click="navegarParaLogin">Entrar</span>
+      </p>
     </div>
   </div>
 </template>
@@ -39,20 +45,24 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-function navegarParaCadastro() {
-  router.push('/cadastro');
+function navegarParaLogin() {
+  router.push('/login');
 }
 
+const nome = ref('');
 const email = ref('');
 const senha = ref('');
+const mostrarErroNome = ref(false);
 const mostrarErroEmail = ref(false);
 const mostrarErroSenha = ref(false);
 
-
+const nomeValido = computed(() => nome.value.trim().length >= 3);
 const emailValido = computed(() => /\S+@\S+\.\S+/.test(email.value));
-
 const senhaValida = computed(() => senha.value.length >= 6);
 
+function validarNome() {
+  mostrarErroNome.value = !nomeValido.value && nome.value !== '';
+}
 
 function validarEmail() {
   mostrarErroEmail.value = !emailValido.value && email.value !== '';
@@ -62,9 +72,9 @@ function validarSenha() {
   mostrarErroSenha.value = !senhaValida.value && senha.value !== '';
 }
 
-function fazerLogin() {
-  if (emailValido.value && senhaValida.value) {
-    alert('Login realizado com sucesso!');
+function fazerCadastro() {
+  if (nomeValido.value && emailValido.value && senhaValida.value) {
+    alert('Cadastro realizado com sucesso!');
   } else {
     alert('Preencha os campos corretamente.');
   }
@@ -72,25 +82,24 @@ function fazerLogin() {
 </script>
 
 <style scoped>
-
 body {
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
-  background: linear-gradient(135deg, #3a8d99, #0e1e30);
+  background: linear-gradient(135deg, #6a89cc, #3c6382);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.login-container {
+.register-container {
   width: 100%;
-  max-width: 300px;
+  max-width: 320px;
   justify-content: center;
   align-items: center;
 }
 
-.login-box {
+.register-box {
   width: 100%;
   background: #fff;
   padding: 40px;
@@ -101,7 +110,7 @@ body {
   transition: transform 0.3s ease;
 }
 
-.login-box:hover {
+.register-box:hover {
   transform: scale(1);
 }
 
@@ -129,21 +138,13 @@ body {
 }
 
 .input:focus {
-  border-color: #0e1e30;
+  border-color: #3c6382;
 }
 
 .error-message {
   color: rgba(201, 4, 4, 0.811);
   font-size: 12px;
   margin-top: -8px;
-}
-
-.page-link {
-  text-align: end;
-  color: #0e1e30;
-  text-decoration: underline;
-  cursor: pointer;
-  font-size: 13px;
 }
 
 .form-btn {
@@ -159,27 +160,26 @@ body {
 }
 
 .form-btn:hover {
-  background-color: #3a8d99;
+ background-color: #3a8d99;
 }
 
 .form-btn:active {
   box-shadow: none;
 }
 
-.sign-up-label {
+.login-label {
   font-size: 14px;
   color: #666;
 }
 
-.sign-up-link {
-  color: #0e1e30;
+.login-link {
+  color: #3c6382;
   font-weight: 600;
   cursor: pointer;
   text-decoration: underline;
 }
 
-  .title {
-    font-size: 28px;
-  }
-
+.title {
+  font-size: 28px;
+}
 </style>
